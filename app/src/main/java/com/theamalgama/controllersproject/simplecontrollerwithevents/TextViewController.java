@@ -13,8 +13,6 @@ import com.theamalgama.events.interfaces.Event;
  */
 public class TextViewController extends BaseEventController<TextView> {
 
-    private TextView textView;
-
     protected TextViewController(Context context) {
         super(context);
     }
@@ -24,14 +22,7 @@ public class TextViewController extends BaseEventController<TextView> {
     }
 
     @Override
-    public TextView getView() {
-        return textView;
-    }
-
-    @Override
-    public void attachView(TextView textView) {
-        this.textView = textView;
-
+    protected void onViewAttached(TextView textView) {
         textView.setText("TextViewController Test");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override

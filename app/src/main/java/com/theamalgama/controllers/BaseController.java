@@ -11,13 +11,14 @@ import android.view.View;
 public abstract class BaseController<T extends View> {
 
     private Context context;
+    private T view;
 
-    protected BaseController(Context context) {
-        this.context = context;
+    public BaseController(Context context) {
+        setContext(context);
     }
 
-    protected BaseController(Context context, T t) {
-        this.context = context;
+    public BaseController(Context context, T t) {
+        setContext(context);
         attachView(t);
     }
 
@@ -57,7 +58,13 @@ public abstract class BaseController<T extends View> {
      *      viewPager.setAdapter(new Adapter(someViewController.getView(), anotherViewController.getView()));
      *  }
      */
-    public abstract T getView();// throws ViewNotAttachedException;
-    public abstract void attachView(T t);
+    public T getView() {
+        return view;
+    }// throws ViewNotAttachedException;
+    public void attachView(T t) {
+        onViewAttached(view = t);
+    }
+
+    protected abstract void onViewAttached(T t);
 
 }

@@ -22,11 +22,11 @@ public abstract class BaseEventController<T extends View> extends BaseController
     private EventListener eventListener;
     private EventBroadcastListener eventBroadcastListener;
 
-    protected BaseEventController(Context context) {
+    public BaseEventController(Context context) {
         super(context);
     }
 
-    protected BaseEventController(Context context, T t) {
+    public BaseEventController(Context context, T t) {
         super(context, t);
     }
 
@@ -45,10 +45,10 @@ public abstract class BaseEventController<T extends View> extends BaseController
     }
 
     /**
-     * Set an EventBroadcastListener which will broadcast events to all the
+     * Set an EventNotifierListener which will broadcast events to all the
      * classes listening.
      *
-     * On contrary to the eventListener, here events will be sent to all the classes listening the eventmanager,
+     * On contrary to the eventManager, here events will be sent to all the classes listening the eventmanager,
      * bypassing the handling of the eventManager, and letting each class listening respond to the event you are sending.
      *
      * @param broadcastListener
@@ -63,17 +63,23 @@ public abstract class BaseEventController<T extends View> extends BaseController
      *  - Broadcast events to other classes.
      *  - Receive and handle other events.
      *
-     *  FOR OTHER VERSION WITH EventManager NOT IMPLEMENTING EventBroadcastListener use:
-     *  public <E extends EventManager & EventBroadcastListener> void setEventHandlerListener(E e) {
+     *  FOR OTHER VERSION WITH EventManager NOT IMPLEMENTING EventNotifierListener use:
+     *  public <E extends EventManager & EventNotifierListener> void setEventHandlerListener(E e) {
      *      sameStuffHere;
      *  }
      *
-     * @param eventManager the EventManager in particular. Must implement EventBroadcastListener and EventListener
+     * @param eventManager the EventManager in particular. Must implement EventNotifierListener and EventListener
      */
     public void setEventHandlerListener(EventManager eventManager) {
         setEventListener(eventManager);
         setEventBroadcastListener(eventManager);
-        eventManager.addEventNotifierListener(this);
+
+        if(eventManager!=null) {
+            //avoid duplicates
+            eventManager.removeEventNotifierListener(this);
+
+            eventManager.addEventNotifierListener(this);
+        }
     }
 
     //--------------------Handling of events---------------//
@@ -93,7 +99,7 @@ public abstract class BaseEventController<T extends View> extends BaseController
      */
     protected void onEvent(Event event) {
         if(eventListener==null)
-            throw new NullPointerException("eventListener in BaseEventController can't be null");
+            throw new NullPointerException("eventManager in BaseEventController can't be null");
 
         eventListener.onEvent(event);
     }
