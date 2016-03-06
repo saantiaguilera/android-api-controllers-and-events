@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.theamalgama.controllers.BaseEventController;
-import com.theamalgama.events.interfaces.Event;
+import com.theamalgama.event.Event;
+import com.theamalgama.event.listeners.EventNotifierListener;
 
 /**
  * Created by santi on 08/01/16.
@@ -27,19 +28,28 @@ public class TextViewController extends BaseEventController<TextView> {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEvent(new SimpleControllerWithEventsTextViewClickEvent());
+                broadcastEvent(new SimpleControllerWithEventsTextViewClickEvent());
             }
         });
     }
 
     @Override
-    public void onNewEvent(Event event) {
-        super.onNewEvent(event);
-
-        if(event instanceof TextViewController.SimpleControllerWithEventsTextViewClickEvent)
-            Log.w("TextViewController", "Event of type SimpleControllerWithEventsTextViewClickEvent found");
+    protected EventNotifierListener getEventNotifierListener() {
+        return eventNotifierListener;
     }
 
-    public class SimpleControllerWithEventsTextViewClickEvent implements Event {};
+    private final EventNotifierListener eventNotifierListener = new EventNotifierListener() {
+        @Override
+        public void onTextClicked() {
+            Log.w("TextViewController", "Event of type SimpleControllerWithEventsTextViewClickEvent found");
+        }
+    };
+
+    public class SimpleControllerWithEventsTextViewClickEvent implements Event {
+        @Override
+        public void notify(EventNotifierListener listener) {
+            listener.onTextClicked();
+        }
+    };
 
 }

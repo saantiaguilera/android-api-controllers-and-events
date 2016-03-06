@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * Basic controller for a particular View
  *
- * Created by santi on 08/01/16.
+ * Created by santiaguilera@theamalgama.com on 08/01/16.
  */
 public abstract class BaseController<T extends View> {
 
