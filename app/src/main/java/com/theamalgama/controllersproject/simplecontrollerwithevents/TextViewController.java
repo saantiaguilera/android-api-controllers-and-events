@@ -45,11 +45,4 @@ public class TextViewController extends BaseEventController<TextView> {
         }
     };
 
-    public class SimpleControllerWithEventsTextViewClickEvent implements Event {
-        @Override
-        public void notify(EventNotifierListener listener) {
-            listener.onTextClicked();
-        }
-    };
-
 }
