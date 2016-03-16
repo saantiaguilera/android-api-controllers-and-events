@@ -17,6 +17,10 @@ public class Event {
      * This means that it will first try to dispatch it to this instance(a child), then to his parent, and like that
      * until it reaches to Event.class (non inclusive)
      *
+     * <strong> Make sure your proguard runs keepattributes '*Annotation*' . As default Proguard removes all of them, and since
+     * this works in RunTime we wont catch a single method because proguard removed all of the anotations. With that line we are
+     * telling the proguard to dont remove them</strong>
+     *
      * @param listener object that will respond to the event
      */
     public void dispatchEventTo(Object listener) {
