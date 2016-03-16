@@ -33,7 +33,7 @@ public class EventManager implements EventListener {
     }
 
     /**
-     * Adds an instance (that must implement EventNotifierListener) to the list of all the
+     * Adds an instance to the list of all the
      * classes that will be notified in the income of an event
      * @param object
      */
@@ -68,7 +68,10 @@ public class EventManager implements EventListener {
      */
     @Override
     public void broadcastEvent(Event event) {
+        //Dispatch the event to ourselves
+        event.dispatchEventTo(this);
 
+        //Iterate through all the objects listening and dispatch it too
         for(Object object : new ArrayList<>(objectsListening)){
             if(object!=null)
                 event.dispatchEventTo(object);
