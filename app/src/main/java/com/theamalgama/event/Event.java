@@ -1,24 +1,37 @@
 package com.theamalgama.event;
 
-import com.theamalgama.event.listeners.EventHandler;
-import com.theamalgama.event.listeners.EventNotifierListener;
+import com.theamalgama.event.anotation.EventMethod;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
-public interface Event {
+public class Event {
 
-    /**
-     * Notify the handler about this event if needed
-     * @param handler
-     * @return true if should consume the event (and dont broadcast it to the listeners) or false if it didnt consume the event (it will broadcast to everyone)
-     */
-    boolean handle(EventHandler handler);
+    public void dispatchEventTo( Object listener ) {
+        for (Class eventClass = this.getClass(); eventClass != Event.class; eventClass = eventClass.getSuperclass())
+            dispatchMethodNamed( listener, eventClass );
+    }
 
-    /**
-     * Notify the listener about this event if needed
-     * @param listener
-     */
-    void notify(EventNotifierListener listener);
+    private void dispatchMethodNamed( Object listener, Class eventClass ) {
+        for(Method method : listener.getClass().getDeclaredMethods()) {
+            EventMethod anotation = method.getAnnotation(EventMethod.class);
+            if (anotation!=null && anotation.value()==eventClass)
+               invokeMethod(method, listener);
+        }
+    }
+
+    private void invokeMethod( Method m, Object receiver ) {
+        try {
+            m.setAccessible(true);
+
+            if (m.getParameterTypes().length == 0)
+                m.invoke(receiver);
+            else m.invoke(receiver, this);
+        } catch ( Exception e ) {
+            throw new RuntimeException( e );
+        }
+    }
 
 }

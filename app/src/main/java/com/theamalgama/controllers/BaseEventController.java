@@ -5,8 +5,7 @@ import android.view.View;
 
 import com.theamalgama.event.Event;
 import com.theamalgama.event.EventManager;
-import com.theamalgama.event.listeners.EventListener;
-import com.theamalgama.event.listeners.EventNotifierListener;
+import com.theamalgama.event.listener.EventListener;
 
 /**
  * Base controller which implements the sending/receiving of events.
@@ -54,21 +53,15 @@ public abstract class BaseEventController<T extends View> extends BaseController
     public void setEventHandlerListener(EventManager eventManager) {
         setEventListener(eventManager);
 
-        if(eventManager!=null && getEventNotifierListener()!=null) {
+        if(eventManager!=null) {
             //avoid duplicates
-            eventManager.removeEventNotifierListener(getEventNotifierListener());
+            eventManager.removeListener(this);
 
-            eventManager.addEventNotifierListener(getEventNotifierListener());
+            eventManager.addListener(this);
         }
     }
 
     //--------------------Handling of events---------------//
-
-    /**
-     * Override this method in your extending class to hear the events and handle them
-     * @Note: Avoid recreating instances of an EventNotifierListener in this method since you could start creating duplicates if its called more than once.
-     */
-    protected EventNotifierListener getEventNotifierListener() { return null; }
 
     /**
      * Send an event to the EventManager and handle it there

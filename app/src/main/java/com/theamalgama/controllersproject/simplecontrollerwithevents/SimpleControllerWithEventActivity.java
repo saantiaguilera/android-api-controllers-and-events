@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.theamalgama.controllersproject.R;
 import com.theamalgama.event.EventManager;
-import com.theamalgama.event.listeners.EventNotifierListener;
+import com.theamalgama.event.anotation.EventMethod;
 
 public class SimpleControllerWithEventActivity extends Activity {
 
@@ -28,11 +28,12 @@ public class SimpleControllerWithEventActivity extends Activity {
         eventManager = new EventManager(this);
         textViewController.setEventHandlerListener(eventManager);
 
-        eventManager.addEventNotifierListener(new EventNotifierListener() {
-            @Override
-            public void onTextClicked() {
-                Log.w("SimpleControllerWithEventActivity", "Event of type SimpleControllerWithEventsTextViewClickEvent found");
-            }
-        });
+        eventManager.addListener(this);
     }
+
+    @EventMethod( SimpleControllerWithEventsTextViewClickEvent.class )
+    private void someMethodThatTriggersThatEvent(SimpleControllerWithEventsTextViewClickEvent event) {
+        Log.w("SimpleControllerWEveActivity", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has param of type" + event.getClass().getSimpleName());
+    }
+
 }
