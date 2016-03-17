@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class in charge of receiving events (from listeners or holders) and manage them or else broadcast them to the other listeners
- * if no action will be done
+ * Class in charge of receiving events (from listeners), manage them and/or broadcast them to the other listeners.
  *
  * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
@@ -61,10 +60,9 @@ public class EventManager implements EventListener {
     }
 
     /**
-     * Method called (by one sending an event) for the purpose of managing that event, or else broadcast it to the
+     * Method called (by one sending an event) for the purpose of managing that event, and/or else broadcast it to the
      * list of classes listening
      * @param event
-     * @return if the event was handled or not by the EventManager
      */
     @Override
     public void broadcastEvent(Event event) {

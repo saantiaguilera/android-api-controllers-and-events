@@ -30,9 +30,9 @@ public abstract class BaseEventController<T extends View> extends BaseController
     //-------------------SETTERS------------------//
 
     /**
-     * Set an EventListener which will broadcast events to the eventmanager.
+     * Set an EventListener which will broadcast events.
      *
-     * @param eventListener used for sending events to the EventManager
+     * @param eventListener used for sending events to the EventManager and the listening classes
      */
     public void setEventListener(EventListener eventListener){
         this.eventListener = eventListener;
@@ -42,11 +42,6 @@ public abstract class BaseEventController<T extends View> extends BaseController
      * Short version of everything you need for the events. With this you will be able to:
      *  - Broadcast events to the eventmanager and the listening classes.
      *  - Receive and handle other events.
-     *
-     *  FOR OTHER VERSION WITH EventManager NOT IMPLEMENTING EventNotifierListener use:
-     *  public <E extends EventManager & EventNotifierListener> void setEventHandlerListener(E e) {
-     *      sameStuffHere;
-     *  }
      *
      * @param eventManager the EventManager in particular. Must implement EventListener (obviously)
      */
@@ -64,7 +59,8 @@ public abstract class BaseEventController<T extends View> extends BaseController
     //--------------------Handling of events---------------//
 
     /**
-     * Send an event to the EventManager and handle it there
+     * Send an event, process it (optional) in the eventmanager, and
+     * dispatch it to all the listeners
      *
      * @param event
      */
