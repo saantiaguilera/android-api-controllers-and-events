@@ -11,7 +11,7 @@ import com.theamalgama.event.anotation.EventMethod;
 
 public class SimpleControllerWithEventActivity extends Activity {
 
-    private TextViewController textViewController;
+    private TextViewViewController textViewController;
 
     private EventManager eventManager;
 
@@ -22,7 +22,8 @@ public class SimpleControllerWithEventActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //Create instance of controller
-        textViewController = new TextViewController(this, (TextView) findViewById(R.id.activity_main_textview));
+        textViewController = new TextViewViewController(this);
+        textViewController.attachElement((TextView) findViewById(R.id.activity_main_textview));
 
         //Create an eventManager and set it
         eventManager = new EventManager(this);
@@ -32,7 +33,7 @@ public class SimpleControllerWithEventActivity extends Activity {
     }
 
     @EventMethod( SimpleControllerWithEventsTextViewClickEvent.class )
-    private void someMethodThatTriggersThatEvent(SimpleControllerWithEventsTextViewClickEvent event) {
+    private void someMethoasdThatTriggersThatEvent(SimpleControllerWithEventsTextViewClickEvent event) {
         Log.w("SimpleControllerWEveActivity", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has param of type" + event.getClass().getSimpleName());
     }
 

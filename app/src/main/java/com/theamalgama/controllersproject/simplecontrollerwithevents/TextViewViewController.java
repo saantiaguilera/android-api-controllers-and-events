@@ -5,25 +5,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.theamalgama.controllers.BaseEventController;
+import com.theamalgama.controllers.BaseController;
 import com.theamalgama.event.anotation.EventMethod;
 
 /**
  * Created by santi on 08/01/16.
  */
-public class TextViewController extends BaseEventController<TextView> {
+public class TextViewViewController extends BaseController<TextView> {
 
-    protected TextViewController(Context context) {
+    public TextViewViewController(Context context) {
         super(context);
     }
 
-    protected TextViewController(Context context, TextView textView) {
-        super(context, textView);
-    }
-
     @Override
-    protected void onViewAttached(TextView textView) {
-        textView.setText("TextViewController Test");
+    protected void onElementAttached(TextView textView) {
+        textView.setText("TextViewViewController Test");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +30,7 @@ public class TextViewController extends BaseEventController<TextView> {
 
     @EventMethod( SimpleControllerWithEventsTextViewClickEvent.class )
     private void someMethodThatTriggersThatEvent() {
-        Log.w("TextViewController", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has no params");
+        Log.w("TextViewViewController", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has no params");
     }
 
 }

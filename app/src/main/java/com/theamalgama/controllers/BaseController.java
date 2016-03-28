@@ -3,26 +3,30 @@ package com.theamalgama.controllers;
 import android.content.Context;
 import android.view.View;
 
+import com.theamalgama.event.Event;
+import com.theamalgama.event.EventManager;
+import com.theamalgama.event.listener.EventListener;
+
 /**
- * Basic controller for a particular View
+ * Base controller which implements the sending/receiving of events.
+ * You can broadcast a particular event to the EventManager
+ * For receiving and handling events in a controller you will need override the getEventNotifierListener() and implmement an instance of EventNotifierListener
  *
  * Created by santiaguilera@theamalgama.com on 08/01/16.
  */
-public abstract class BaseController<T extends View> {
+public abstract class BaseController<T> {
 
     private Context context;
-    private T view;
+
+    private T t;
+
+    private EventListener eventListener;
 
     public BaseController(Context context) {
-        setContext(context);
+        this.context = context;
     }
 
-    public BaseController(Context context, T t) {
-        setContext(context);
-        attachView(t);
-    }
-
-    //------------------Context stuff--------------------//
+    //------------------CONTEXT---------------------//
 
     protected Context getContext() {
         if(context==null)
@@ -35,37 +39,74 @@ public abstract class BaseController<T extends View> {
         this.context = context;
     }
 
-    //--------------------View stuff--------------------//
+    //-------------------ELEMENT--------------------//
 
     /**
-     * Since you can either inflate a View or create and add it to something (eg ViewPager adapter)
-     * You will always have to attach a View to a controller (hold a reference if needed, or not)
-     * getView can be useful if you have nested controllers and you have to get a View for an adapter of another controller.
-     *
-     * EG.
-     *  Activity>
-     *  textViewController = new TextViewController(Activity.this, findViewById(R.id.text));
-     *
-     *  TextViewController>
-     *  onAttach(TextView textView) {
-     *      this.textView = textView;
-     *      initializeViewStuffAndListeners();
-     *  }
-     *
-     *  ALSO.
-     *  ViewPagerController>
-     *  someMethodThatSetsAdapter(){
-     *      viewPager.setAdapter(new Adapter(someViewController.getView(), anotherViewController.getView()));
-     *  }
+     * Attach an element to the controller
+     * @param t
      */
-    public T getView() {
-        return view;
-    } // throws ViewNotAttachedException;
-    public void attachView(T t) {
-        if(t==null) return;
-        onViewAttached(view = t);
+    public void attachElement( T t) {
+        this.t = t;
+        onElementAttached(t);
     }
 
-    protected abstract void onViewAttached(T t);
+    /**
+     * Called after attaching an element, subclass
+     * should implement it
+     * @param t
+     */
+    protected abstract void onElementAttached(T t);
+
+    /**
+     * Get the element attached to the view
+     * @return
+     */
+    public T getElement() {
+        return t;
+    }
+
+    //-------------------SETTERS------------------//
+
+    /**
+     * Set an EventListener which will broadcast events.
+     *
+     * @param eventListener used for sending events to the EventManager and the listening classes
+     */
+    public void setEventListener(EventListener eventListener){
+        this.eventListener = eventListener;
+    }
+
+    /**
+     * Short version of everything you need for the events. With this you will be able to:
+     *  - Broadcast events to the eventmanager and the listening classes.
+     *  - Receive and handle other events.
+     *
+     * @param eventManager the EventManager in particular. Must implement EventListener (obviously)
+     */
+    public void setEventHandlerListener(EventManager eventManager) {
+        setEventListener(eventManager);
+
+        if(eventManager!=null) {
+            //avoid duplicates
+            eventManager.removeListener(this);
+
+            eventManager.addListener(this);
+        }
+    }
+
+    //--------------------Handling of events---------------//
+
+    /**
+     * Send an event, process it (optional) in the eventmanager, and
+     * dispatch it to all the listeners
+     *
+     * @param event
+     */
+    protected void broadcastEvent(Event event) {
+        if(eventListener==null)
+            throw new NullPointerException("eventManager in BaseController can't be null");
+
+        eventListener.broadcastEvent(event);
+    }
 
 }
