@@ -10,13 +10,13 @@ import java.util.List;
 /**
  * Created by santi on 28/03/16.
  */
-public abstract class GenericRecyclerAdapter<T extends View, E> extends RecyclerView.Adapter<GenericRecyclerAdapter.ViewHolder> {
+public abstract class BaseRecyclerAdapter<T extends View, E> extends RecyclerView.Adapter<BaseRecyclerAdapter.ViewHolder> {
 
     private Context context;
 
     private List<? extends E> dataSet;
 
-    public GenericRecyclerAdapter(Context context, List<? extends E> dataSet) {
+    public BaseRecyclerAdapter(Context context, List<? extends E> dataSet) {
         this.context = context;
         this.dataSet = dataSet;
     }
@@ -33,7 +33,7 @@ public abstract class GenericRecyclerAdapter<T extends View, E> extends Recycler
     protected abstract void bindView(T t, E e);
 
     @Override
-    public GenericRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(createView(parent, viewType));
     }
 
