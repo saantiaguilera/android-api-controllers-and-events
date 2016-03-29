@@ -1,12 +1,12 @@
-package com.theamalgama.controllersproject.simplecontrollerwithevents;
+package com.santiago.controllersproject.simplecontrollerwithevents;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.theamalgama.controllers.BaseController;
-import com.theamalgama.event.anotation.EventMethod;
+import com.santiago.controllers.BaseController;
+import com.santiago.event.anotation.EventMethod;
 
 /**
  * Created by santi on 08/01/16.

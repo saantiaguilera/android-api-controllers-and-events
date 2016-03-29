@@ -1,6 +1,6 @@
-package com.theamalgama.event;
+package com.santiago.event;
 
-import com.theamalgama.event.anotation.EventMethod;
+import com.santiago.event.anotation.EventMethod;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

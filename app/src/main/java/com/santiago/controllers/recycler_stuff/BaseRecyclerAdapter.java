@@ -1,4 +1,4 @@
-package com.theamalgama.controllers.extras;
+package com.santiago.controllers.recycler_stuff;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

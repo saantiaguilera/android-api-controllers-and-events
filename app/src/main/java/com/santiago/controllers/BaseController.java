@@ -1,11 +1,10 @@
-package com.theamalgama.controllers;
+package com.santiago.controllers;
 
 import android.content.Context;
-import android.view.View;
 
-import com.theamalgama.event.Event;
-import com.theamalgama.event.EventManager;
-import com.theamalgama.event.listener.EventListener;
+import com.santiago.event.Event;
+import com.santiago.event.EventManager;
+import com.santiago.event.listener.EventListener;
 
 /**
  * Base controller which implements the sending/receiving of events.

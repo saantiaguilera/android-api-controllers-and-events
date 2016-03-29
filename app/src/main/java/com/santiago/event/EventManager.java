@@ -1,16 +1,14 @@
-package com.theamalgama.event;
+package com.santiago.event;
 
 import android.content.Context;
 
-import com.theamalgama.event.listener.EventListener;
+import com.santiago.event.listener.EventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class in charge of receiving events (from listeners), manage them and/or broadcast them to the other listeners.
- *
- * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
 public class EventManager implements EventListener {
 

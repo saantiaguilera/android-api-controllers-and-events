@@ -1,6 +1,6 @@
-package com.theamalgama.event.listener;
+package com.santiago.event.listener;
 
-import com.theamalgama.event.Event;
+import com.santiago.event.Event;
 
 /**
  * Created by santiaguilera@theamalgama.com on 01/03/16.

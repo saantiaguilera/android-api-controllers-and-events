@@ -1,6 +1,6 @@
-package com.theamalgama.event.anotation;
+package com.santiago.event.anotation;
 
-import com.theamalgama.event.Event;
+import com.santiago.event.Event;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

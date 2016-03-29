@@ -1,13 +1,13 @@
-package com.theamalgama.controllersproject.simplecontrollerwithevents;
+package com.santiago.controllersproject.simplecontrollerwithevents;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.theamalgama.controllersproject.R;
-import com.theamalgama.event.EventManager;
-import com.theamalgama.event.anotation.EventMethod;
+import com.santiago.controllersproject.R;
+import com.santiago.event.EventManager;
+import com.santiago.event.anotation.EventMethod;
 
 public class SimpleControllerWithEventActivity extends Activity {
 
