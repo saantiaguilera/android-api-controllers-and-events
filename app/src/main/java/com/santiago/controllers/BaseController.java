@@ -1,6 +1,7 @@
 package com.santiago.controllers;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.santiago.event.Event;
 import com.santiago.event.EventManager;
@@ -44,9 +45,11 @@ public abstract class BaseController<T> {
      * Attach an element to the controller
      * @param t
      */
-    public void attachElement( T t) {
+    public void attachElement(@Nullable T t) {
         this.t = t;
-        onElementAttached(t);
+
+        if (t != null)
+            onElementAttached(t);
     }
 
     /**
@@ -76,13 +79,20 @@ public abstract class BaseController<T> {
     }
 
     /**
+     * @return eventListener instance
+     */
+    public EventListener getEventListener() {
+        return eventListener;
+    }
+
+    /**
      * Short version of everything you need for the events. With this you will be able to:
      *  - Broadcast events to the eventmanager and the listening classes.
      *  - Receive and handle other events.
      *
      * @param eventManager the EventManager in particular. Must implement EventListener (obviously)
      */
-    public void setEventHandlerListener(EventManager eventManager) {
+    public void setEventHandlerListener(@Nullable EventManager eventManager) {
         setEventListener(eventManager);
 
         if(eventManager!=null) {
@@ -101,9 +111,12 @@ public abstract class BaseController<T> {
      *
      * @param event
      */
-    protected void broadcastEvent(Event event) {
+    protected void broadcastEvent(@Nullable Event event) {
         if(eventListener==null)
-            throw new NullPointerException("eventManager in BaseController can't be null");
+            throw new NullPointerException(EventListener.class.getSimpleName() + " instance in " + this.getClass().getSimpleName() + " can't be null");
+
+        if(event == null)
+            throw new NullPointerException(Event.class.getSimpleName() + " is null in method");
 
         eventListener.broadcastEvent(event);
     }
