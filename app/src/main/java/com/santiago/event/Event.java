@@ -1,14 +1,34 @@
 package com.santiago.event;
 
+import com.santiago.event.anotation.AsyncMethod;
 import com.santiago.event.anotation.EventMethod;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
 public class Event {
+
+    private static ThreadPoolExecutor poolExecutor = null;
+
+    private static ThreadPoolExecutor getPoolExecutor() {
+        if (poolExecutor == null) {
+            poolExecutor = new ThreadPoolExecutor(
+                    Runtime.getRuntime().availableProcessors() * 2,
+                    Runtime.getRuntime().availableProcessors() * 2,
+                    5L, //Since this should be just work from the event, (you cant send messages here), once its idle its done. So this value has to be low
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>()
+            );
+        }
+
+        return poolExecutor;
+    }
 
     /**
      * Dispatchs to an object (listener) the event through all the hierarchy of the Event class (since you wont be dispatching an event
@@ -30,6 +50,15 @@ public class Event {
             dispatchMethod(listener, eventClass);
     }
 
+    private void invokeAsyncMethod(final Method method, final Object receiver) {
+        getPoolExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                invokeMethod(method, receiver);
+            }
+        });
+    }
+
     /**
      * Invokes each method from the object (listener) that has an EventMethod anotation referencing "this" class
      *
@@ -43,8 +72,11 @@ public class Event {
         for(Method method : listener.getClass().getDeclaredMethods()) {
             //Get the method anotation of type EventMethod, if its value is the same as this class invoke it
             EventMethod anotation = method.getAnnotation(EventMethod.class);
-            if (anotation!=null && anotation.value()==eventClass)
-               invokeMethod(method, listener);
+            if (anotation!=null && anotation.value()==eventClass) {
+                if (method.getAnnotation(AsyncMethod.class) != null)
+                    invokeAsyncMethod(method, listener);
+                else invokeMethod(method, listener);
+            }
         }
     }
 
