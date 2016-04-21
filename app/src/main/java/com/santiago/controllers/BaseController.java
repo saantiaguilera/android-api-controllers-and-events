@@ -1,6 +1,7 @@
 package com.santiago.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.santiago.event.Event;
@@ -22,20 +23,20 @@ public abstract class BaseController<T> {
 
     private EventListener eventListener;
 
-    public BaseController(Context context) {
+    public BaseController(@NonNull Context context) {
         this.context = context;
     }
 
     //------------------CONTEXT---------------------//
 
-    protected Context getContext() {
+    protected @NonNull Context getContext() {
         if(context==null)
             throw new NullPointerException("No context found");
 
         return context;
     }
 
-    protected void setContext(Context context){
+    protected void setContext(@NonNull Context context){
         this.context = context;
     }
 
@@ -57,13 +58,13 @@ public abstract class BaseController<T> {
      * should implement it
      * @param t
      */
-    protected abstract void onElementAttached(T t);
+    protected abstract void onElementAttached(@NonNull T t);
 
     /**
      * Get the element attached to the view
      * @return
      */
-    public T getElement() {
+    public @Nullable T getElement() {
         return t;
     }
 
@@ -74,14 +75,14 @@ public abstract class BaseController<T> {
      *
      * @param eventListener used for sending events to the EventManager and the listening classes
      */
-    public void setEventListener(EventListener eventListener){
+    public void setEventListener(@NonNull EventListener eventListener){
         this.eventListener = eventListener;
     }
 
     /**
      * @return eventListener instance
      */
-    public EventListener getEventListener() {
+    public @NonNull EventListener getEventListener() {
         return eventListener;
     }
 
@@ -92,15 +93,12 @@ public abstract class BaseController<T> {
      *
      * @param eventManager the EventManager in particular. Must implement EventListener (obviously)
      */
-    public void setEventHandlerListener(@Nullable EventManager eventManager) {
+    public void setEventHandlerListener(@NonNull EventManager eventManager) {
         setEventListener(eventManager);
 
-        if(eventManager!=null) {
-            //avoid duplicates
-            eventManager.removeListener(this);
-
-            eventManager.addListener(this);
-        }
+        //avoid duplicates
+        eventManager.removeListener(this);
+        eventManager.addListener(this);
     }
 
     //--------------------Handling of events---------------//
@@ -111,12 +109,9 @@ public abstract class BaseController<T> {
      *
      * @param event
      */
-    protected void broadcastEvent(@Nullable Event event) {
-        if(eventListener==null)
+    protected void broadcastEvent(@NonNull Event event) {
+        if(eventListener == null)
             throw new NullPointerException(EventListener.class.getSimpleName() + " instance in " + this.getClass().getSimpleName() + " can't be null");
-
-        if(event == null)
-            throw new NullPointerException(Event.class.getSimpleName() + " is null in method");
 
         eventListener.broadcastEvent(event);
     }

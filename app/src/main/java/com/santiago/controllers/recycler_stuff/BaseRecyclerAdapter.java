@@ -1,5 +1,6 @@
 package com.santiago.controllers.recycler_stuff;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,26 +17,27 @@ public abstract class BaseRecyclerAdapter<T extends View, E> extends RecyclerVie
 
     private List<? extends E> dataSet;
 
-    public BaseRecyclerAdapter(List<? extends E> dataSet) {
+    public BaseRecyclerAdapter(@NonNull List<? extends E> dataSet) {
         this.dataSet = dataSet;
     }
 
-    public void setDataSet(List<? extends E> dataSet) {
+    public void setDataSet(@NonNull List<? extends E> dataSet) {
         this.dataSet = dataSet;
     }
 
-    public List<? extends E> getDataSet() {
+    public @NonNull List<? extends E> getDataSet() {
         return dataSet;
     }
 
-    protected abstract T createView(ViewGroup parent, int viewType);
-    protected abstract void bindView(T t, E e);
+    protected abstract @NonNull T createView(@NonNull ViewGroup parent, @NonNull int viewType);
+    protected abstract void bindView(@NonNull T t, @NonNull E e);
 
     @Override
     public BaseRecyclerAdapter.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new BaseViewHolder(createView(parent, viewType));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(BaseRecyclerAdapter.BaseViewHolder holder, int position) {
         bindView((T) holder.itemView, dataSet.get(position));
@@ -47,7 +49,7 @@ public abstract class BaseRecyclerAdapter<T extends View, E> extends RecyclerVie
     }
 
     public class BaseViewHolder extends RecyclerView.ViewHolder {
-        public BaseViewHolder(T t) {
+        public BaseViewHolder(@NonNull T t) {
             super(t);
         }
     }

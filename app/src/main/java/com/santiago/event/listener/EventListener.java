@@ -1,5 +1,7 @@
 package com.santiago.event.listener;
 
+import android.support.annotation.NonNull;
+
 import com.santiago.event.Event;
 
 /**
@@ -11,6 +13,6 @@ public interface EventListener {
      * Broadcast the event to all the ones listening
      * @param event
      */
-    void broadcastEvent(Event event);
+    void broadcastEvent(@NonNull Event event);
 
 }

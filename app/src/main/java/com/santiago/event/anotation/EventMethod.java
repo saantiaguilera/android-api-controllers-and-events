@@ -1,5 +1,7 @@
 package com.santiago.event.anotation;
 
+import android.support.annotation.NonNull;
+
 import com.santiago.event.Event;
 
 import java.lang.annotation.ElementType;
@@ -18,6 +20,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventMethod {
 
-    Class<? extends Event> value() default Event.class;
+    @NonNull Class<? extends Event> value() default Event.class;
 
 }

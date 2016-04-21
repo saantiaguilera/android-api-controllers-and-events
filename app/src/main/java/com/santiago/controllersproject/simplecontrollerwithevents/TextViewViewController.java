@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.santiago.controllers.BaseController;
-import com.santiago.event.anotation.AsyncMethod;
+import com.santiago.event.anotation.EventAsync;
 import com.santiago.event.anotation.EventMethod;
 
 /**
@@ -29,11 +29,10 @@ public class TextViewViewController extends BaseController<TextView> {
         });
     }
 
-    @AsyncMethod
+    @EventAsync
     @EventMethod(SimpleControllerWithEventsTextViewClickEvent.class)
     private void someMethodThatTriggersThatEvent() {
-        Log.w("TextViewViewController", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has no params");
-        Log.w("TextViewViewController", "This is being called from thread " + Thread.currentThread().getName());
+        Log.w("TextViewViewController", "Event of type: " + SimpleControllerWithEventsTextViewClickEvent.class.getName() + " dispatched from thread: " + Thread.currentThread().getName());
     }
 
 }

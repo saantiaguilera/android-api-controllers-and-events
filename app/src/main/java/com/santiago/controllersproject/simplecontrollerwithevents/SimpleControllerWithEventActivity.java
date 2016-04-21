@@ -30,13 +30,11 @@ public class SimpleControllerWithEventActivity extends Activity {
         textViewController.setEventHandlerListener(eventManager);
 
         eventManager.addListener(this);
-
-        Log.w("SimpleContActivity", "Main thread name is: " + Thread.currentThread().getName());
     }
 
-    @EventMethod( SimpleControllerWithEventsTextViewClickEvent.class )
+    @EventMethod(SimpleControllerWithEventsTextViewClickEvent.class)
     private void someMethoasdThatTriggersThatEvent(SimpleControllerWithEventsTextViewClickEvent event) {
-        Log.w("SimpleContActivity", "Event of type SimpleControllerWithEventsTextViewClickEvent found, event has param of type" + event.getClass().getSimpleName());
+        Log.w("SimpleContActivity", "Method from type: " + SimpleControllerWithEventsTextViewClickEvent.class.getName() + " dispatched from thread: " + Thread.currentThread().getName());
     }
 
 }
