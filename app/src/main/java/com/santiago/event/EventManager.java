@@ -21,7 +21,7 @@ public class EventManager implements EventListener {
 
     private EventDispatcher dispatcher; //Dude in charge of dispatching events
 
-    private final List<Object> objectsListening = new ArrayList<>(); //List of all the objects willing to receive events
+    private final List<Object> observables = new ArrayList<>(); //List of all the objects willing to receive events
 
     public EventManager(@NonNull Context context){
         this.context = context;
@@ -36,46 +36,46 @@ public class EventManager implements EventListener {
     /**
      * Adds an instance to the list of all the
      * classes that will be notified in the income of an event
-     * @param object
+     * @param observable
      */
-    public void addListener(@NonNull Object object){
-        synchronized (objectsListening) {
-            objectsListening.add(object);
+    public void addObservable(@NonNull Object observable){
+        synchronized (observables) {
+            observables.add(observable);
         }
     }
 
     /**
      * Removes an instance to the list of all the classes that will be notified in the income of an event
-     * @param object
+     * @param observable
      * @return if it was successfully removed
      */
-    public boolean removeListener(@NonNull Object object) {
-        synchronized (objectsListening) {
-            return objectsListening.remove(object);
+    public boolean removeObservable(@NonNull Object observable) {
+        synchronized (observables) {
+            return observables.remove(observable);
         }
     }
 
     /**
      * Method called (by one sending an event) for the purpose of managing that event, and/or else broadcast it to the
-     * list of classes listening
+     * list of classes observing
      *
-     * @note Since we could be adding or rm listeners from other threads, we create a copy of the current listeners
+     * @note Since we could be adding or rm observables from other threads, we create a copy of the current observables
      * and iterate over them.
      *
      * @param event
      */
     @Override
-    public void broadcastEvent(@NonNull Event event) {
+    public void dispatchEvent(@NonNull Event event) {
         //Dispatch the event to ourselves
         dispatcher.dispatchEvent(event, this);
 
-        List<Object> listenersCopy;
-        synchronized (objectsListening) {
-            listenersCopy = new ArrayList<>(objectsListening);
+        List<Object> observablesCopy;
+        synchronized (observables) {
+            observablesCopy = new ArrayList<>(observables);
         }
 
         //Iterate through all the objects listening and dispatch it too
-        for(Object object : listenersCopy)
+        for(Object object : observablesCopy)
             if(object != null)
                 dispatcher.dispatchEvent(event, object);
     }

@@ -10,9 +10,9 @@ import com.santiago.event.Event;
 public interface EventListener {
 
     /**
-     * Broadcast the event to all the ones listening
+     * Dispatches the event to all the ones observing
      * @param event
      */
-    void broadcastEvent(@NonNull Event event);
+    void dispatchEvent(@NonNull Event event);
 
 }

@@ -97,8 +97,8 @@ public abstract class BaseController<T> {
         setEventListener(eventManager);
 
         //avoid duplicates
-        eventManager.removeListener(this);
-        eventManager.addListener(this);
+        eventManager.removeObservable(this);
+        eventManager.addObservable(this);
     }
 
     //--------------------Handling of events---------------//
@@ -113,7 +113,7 @@ public abstract class BaseController<T> {
         if(eventListener == null)
             throw new NullPointerException(EventListener.class.getSimpleName() + " instance in " + this.getClass().getSimpleName() + " can't be null");
 
-        eventListener.broadcastEvent(event);
+        eventListener.dispatchEvent(event);
     }
 
 }

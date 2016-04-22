@@ -29,7 +29,7 @@ public class SimpleControllerWithEventActivity extends Activity {
         eventManager = new EventManager(this);
         textViewController.setEventHandlerListener(eventManager);
 
-        eventManager.addListener(this);
+        eventManager.addObservable(this);
     }
 
     @EventMethod(SimpleControllerWithEventsTextViewClickEvent.class)
