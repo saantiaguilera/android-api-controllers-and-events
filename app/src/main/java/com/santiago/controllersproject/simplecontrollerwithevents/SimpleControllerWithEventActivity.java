@@ -37,7 +37,7 @@ public class SimpleControllerWithEventActivity extends Activity {
 
         //Create an eventManager and set it
         eventManager = new EventManager(this, this);
-        textViewController.setEventHandlerListener(eventManager);
+        textViewController.setEventManager(eventManager);
 
         eventManager.addObservable(this);
     }

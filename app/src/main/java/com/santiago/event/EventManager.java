@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 
-import com.santiago.event.listener.EventListener;
+import com.santiago.event.listener.EventDispatcherListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
-public class EventManager implements EventListener {
+public class EventManager implements EventDispatcherListener {
 
     private WeakReference<ContextWrapper> context = null;
     private WeakReference<Object> tag = null;

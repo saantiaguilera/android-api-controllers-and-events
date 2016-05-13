@@ -1,12 +1,6 @@
 # android-api-controllers-and-events
 Controllers (Interactors+Presenters) / EventBus
 
-
--------------------------------------------------------------------
-TODOs
--------------------------------------------------------------------
-- Make controller carry a weakreference of the Context
-
 -------------------------------------------------------------------
 Events
 -------------------------------------------------------------------
@@ -115,10 +109,10 @@ The controller also can:
 ```Java
 protected Context getContext(); //Get the context
 public T getElement(); //Get the element attached
-protected void broadcastEvent(Event someEvent); // Maybe it should also be called dispatchEvent ??
-protected void setContext(Context context); //Set a context
-public void setEventListener(EventListener eventListener); //Only is able to broadcast events
-public void setEventHandlerListener(EventManager em); //Can broadcast + listen to events
+protected void dispatchEvent(Event someEvent); //Dispatch an event
+protected void setContext(ContextWrapper context); //Set a context
+public void setDispatcher(EventDispatcherListener eventDispatcherListener); //Only is able to dispatch events
+public void setEventManager(EventManager em); //Can dispatch + listen to events
 public void attachElement(T t); //Attach him an element
 ```
 

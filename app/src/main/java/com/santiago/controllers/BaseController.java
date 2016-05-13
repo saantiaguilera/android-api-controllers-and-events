@@ -1,12 +1,15 @@
 package com.santiago.controllers;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.santiago.event.Event;
 import com.santiago.event.EventManager;
-import com.santiago.event.listener.EventListener;
+import com.santiago.event.listener.EventDispatcherListener;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Base controller which implements the sending/receiving of events.
@@ -17,27 +20,27 @@ import com.santiago.event.listener.EventListener;
  */
 public abstract class BaseController<T> {
 
-    private Context context;
+    private WeakReference<ContextWrapper> context;
 
     private T t;
 
-    private EventListener eventListener;
+    private EventDispatcherListener eventDispatcherListener;
 
-    public BaseController(@NonNull Context context) {
-        this.context = context;
+    public BaseController(@NonNull ContextWrapper context) {
+        setContext(context);
     }
 
     //------------------CONTEXT---------------------//
 
     protected @NonNull Context getContext() {
-        if(context==null)
+        if(context == null || context.get() == null)
             throw new NullPointerException("No context found");
 
-        return context;
+        return context.get();
     }
 
-    protected void setContext(@NonNull Context context){
-        this.context = context;
+    protected void setContext(@NonNull ContextWrapper context){
+        this.context = new WeakReference<>(context);
     }
 
     //-------------------ELEMENT--------------------//
@@ -71,19 +74,20 @@ public abstract class BaseController<T> {
     //-------------------SETTERS------------------//
 
     /**
-     * Set an EventListener which will broadcast events.
+     * Set an EventDispatcherListener which will broadcast events.
      *
-     * @param eventListener used for sending events to the EventManager and the listening classes
+     * @param eventDispatcherListener used for sending events to the EventManager and the listening classes
      */
-    public void setEventListener(@NonNull EventListener eventListener){
-        this.eventListener = eventListener;
+    public void setDispatcher(@NonNull EventDispatcherListener eventDispatcherListener){
+        this.eventDispatcherListener = eventDispatcherListener;
     }
 
     /**
-     * @return eventListener instance
+     * @return eventDispatcherListener instance
      */
-    public @NonNull EventListener getEventListener() {
-        return eventListener;
+    public @NonNull
+    EventDispatcherListener getDispatcher() {
+        return eventDispatcherListener;
     }
 
     /**
@@ -91,10 +95,10 @@ public abstract class BaseController<T> {
      *  - Broadcast events to the eventmanager and the listening classes.
      *  - Receive and handle other events.
      *
-     * @param eventManager the EventManager in particular. Must implement EventListener (obviously)
+     * @param eventManager the EventManager in particular. Must implement EventDispatcherListener (obviously)
      */
-    public void setEventHandlerListener(@NonNull EventManager eventManager) {
-        setEventListener(eventManager);
+    public void setEventManager(@NonNull EventManager eventManager) {
+        setDispatcher(eventManager);
 
         //avoid duplicates
         eventManager.removeObservable(this);
@@ -109,11 +113,11 @@ public abstract class BaseController<T> {
      *
      * @param event
      */
-    protected void broadcastEvent(@NonNull Event event) {
-        if(eventListener == null)
-            throw new NullPointerException(EventListener.class.getSimpleName() + " instance in " + this.getClass().getSimpleName() + " can't be null");
+    protected void dispatchEvent(@NonNull Event event) {
+        if(eventDispatcherListener == null)
+            throw new NullPointerException(EventDispatcherListener.class.getSimpleName() + " instance in " + this.getClass().getSimpleName() + " can't be null");
 
-        eventListener.dispatchEvent(event);
+        eventDispatcherListener.dispatchEvent(event);
     }
 
 }

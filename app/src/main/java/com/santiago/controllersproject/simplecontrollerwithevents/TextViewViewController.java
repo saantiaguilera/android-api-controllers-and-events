@@ -24,7 +24,7 @@ public class TextViewViewController extends BaseController<TextView> {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                broadcastEvent(new SimpleControllerWithEventsTextViewClickEvent());
+                dispatchEvent(new SimpleControllerWithEventsTextViewClickEvent());
             }
         });
     }

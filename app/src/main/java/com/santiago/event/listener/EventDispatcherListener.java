@@ -7,7 +7,7 @@ import com.santiago.event.Event;
 /**
  * Created by santiaguilera@theamalgama.com on 01/03/16.
  */
-public interface EventListener {
+public interface EventDispatcherListener {
 
     /**
      * Dispatches the event to all the ones observing
