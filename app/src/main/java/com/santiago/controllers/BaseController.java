@@ -20,13 +20,13 @@ import java.lang.ref.WeakReference;
  */
 public abstract class BaseController<T> {
 
-    private WeakReference<ContextWrapper> context;
+    private WeakReference<Context> context;
 
     private T t;
 
     private EventDispatcherListener eventDispatcherListener;
 
-    public BaseController(@NonNull ContextWrapper context) {
+    public BaseController(@NonNull Context context) {
         setContext(context);
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseController<T> {
         return context.get();
     }
 
-    protected void setContext(@NonNull ContextWrapper context){
+    protected void setContext(@NonNull Context context){
         this.context = new WeakReference<>(context);
     }
 
@@ -85,8 +85,7 @@ public abstract class BaseController<T> {
     /**
      * @return eventDispatcherListener instance
      */
-    public @NonNull
-    EventDispatcherListener getDispatcher() {
+    public @NonNull EventDispatcherListener getDispatcher() {
         return eventDispatcherListener;
     }
 

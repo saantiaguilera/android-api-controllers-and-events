@@ -110,7 +110,7 @@ The controller also can:
 protected Context getContext(); //Get the context
 public T getElement(); //Get the element attached
 protected void dispatchEvent(Event someEvent); //Dispatch an event
-protected void setContext(ContextWrapper context); //Set a context
+protected void setContext(Context context); //Set a context
 public void setDispatcher(EventDispatcherListener eventDispatcherListener); //Only is able to dispatch events
 public void setEventManager(EventManager em); //Can dispatch + listen to events
 public void attachElement(T t); //Attach him an element
