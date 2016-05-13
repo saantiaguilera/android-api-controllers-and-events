@@ -101,6 +101,8 @@ public class SomeController extends BaseController<SomeClass> {
     protected void onElementAttached(SomeClass someClass) {
       //Do stuff with the class...
     }
+    
+    //Do all the logic things here. Leave the view just with setters of view things.
 
 }
 ```
@@ -109,7 +111,7 @@ You can attach the view from inside or outside the class, by calling
 someController.attachElement(aView);
 ```
 
-The controller can:
+The controller also can:
 ```Java
 protected Context getContext(); //Get the context
 public T getElement(); //Get the element attached
