@@ -1,10 +1,12 @@
 package com.santiago.event;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 
 import com.santiago.event.listener.EventListener;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,21 +19,25 @@ import java.util.List;
  */
 public class EventManager implements EventListener {
 
-    private Context context = null;
+    private WeakReference<ContextWrapper> context = null;
+    private WeakReference<Object> tag = null;
 
     private EventDispatcher dispatcher; //Dude in charge of dispatching events
 
     private final List<Object> observables = new ArrayList<>(); //List of all the objects willing to receive events
 
-    public EventManager(@NonNull Context context){
-        this.context = context;
+    public EventManager(@NonNull ContextWrapper context, @NonNull Object tag){
+        this.context = new WeakReference<>(context);
+        this.tag = new WeakReference<>(tag);
 
         dispatcher = new EventDispatcher();
     }
 
     public @NonNull Context getContext() {
-        return context;
+        return context.get();
     }
+
+    public @NonNull Object getTag() { return tag.get(); }
 
     /**
      * Adds an instance to the list of all the
@@ -66,6 +72,9 @@ public class EventManager implements EventListener {
      */
     @Override
     public void dispatchEvent(@NonNull Event event) {
+        //Set my own hashcode as "his parent" in case you need to know which EM called him
+        event.setParentHashCode(tag.get().hashCode());
+
         //Dispatch the event to ourselves
         dispatcher.dispatchEvent(event, this);
 
