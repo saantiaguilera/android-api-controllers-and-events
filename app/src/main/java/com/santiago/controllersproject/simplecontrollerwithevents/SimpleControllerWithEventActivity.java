@@ -2,6 +2,7 @@ package com.santiago.controllersproject.simplecontrollerwithevents;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,6 +19,15 @@ public class SimpleControllerWithEventActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
 
         setContentView(R.layout.activity_main);
 
