@@ -1,4 +1,5 @@
-# Deprecated. Events were continued in https://github.com/saantiaguilera/android-api-http-requests. Probably I will merge them into a single lib. For now this is obsolete.
+# Deprecated. 
+###Events were continued in https://github.com/saantiaguilera/android-api-events
 
 Controllers (Interactors+Presenters) / EventBus
 
